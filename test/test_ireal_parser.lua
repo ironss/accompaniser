@@ -19,11 +19,26 @@ end
 
 Test_irealb = {}
 
-
 function Test_irealb:test_1_number_of_songs()
    assertEquals(#book, 300)
 end
 
+function Test_irealb:test_2_book_title()
+   assertEquals(book.title, "Jazz - 1 of 4\n")
+end
+
+
+Test_irealb_songs = {}
+
+for i, v in ipairs(book) do
+--   print(i, v.composer, v.title)
+   Test_irealb_songs['test_' .. i] = function()
+      assertNotEquals(v.composer, '')
+      assertNotEquals(v.title, '')
+      assertNotEquals(v.staff, '')
+   end
+end
 
 
 return LuaUnit:run()
+

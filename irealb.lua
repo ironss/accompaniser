@@ -17,7 +17,7 @@ local irealb_parser = re.compile([[
 
 irealbook <- ( scheme ? songbook  ) -> {}
 scheme <- 'irealbook://'
-songbook <- ( song ( song * ) {:book: field? :} )
+songbook <- ( song ( song * ) {:title: field? :} '\n'* )
 song <- ({:title: field :} ssep {:composer: field :} ssep {:style: field :} ssep {:key: field :} ssep {:xxx: field :} ssep {:staff: staff :} ssep) -> {} 
 
 staff <- {:text: field :} -> {}
