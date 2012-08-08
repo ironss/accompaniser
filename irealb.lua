@@ -33,17 +33,11 @@ content <- [^][}[|zZ]+
 ]])
 
 
-local fn = arg[1]
-local f = io.open(fn)
-local s = f:read('*a')
-local s = url_decode(s)
---print(s)
-local a, b = re.find(s, irealb_parser)
-print(serpent.block(b))
+local M = {}
 
-for i, v in ipairs(b) do
-   print(i, v.composer, v.title, v.staff.text)
-   a, b = re.find(v.staff.text, staff_parser)
-   print(a, serpent.block(b))
-end
+M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
+M.parse = function(s) return re.find(s, irealb_parser) end
+M.staff_parse = function(s) return re.find(s, staff_parser) end
+
+return M
 
