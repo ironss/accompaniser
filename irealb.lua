@@ -18,11 +18,18 @@ local irealb_parser = re.compile([[
 irealbook <- ( scheme ? songbook  ) -> {}
 scheme <- 'irealbook://'
 songbook <- ( song ( song * ) {:book: field? :} )
-song <- ({:title: field :} ssep {:composer: field :} ssep {:style: field :} ssep {:key: field :} ssep {:xxx: field :} ssep {:staff: field :} ssep) -> {} 
+song <- ({:title: field :} ssep {:composer: field :} ssep {:style: field :} ssep {:key: field :} ssep {:xxx: field :} ssep {:staff: staff :} ssep) -> {} 
 
+staff <- {:text: field :} -> {}
 field <- [^=]*
 ssep <- sep %s*
 sep <- '='
+]])
+
+local staff_parser = re.compile([[
+staff <- { content? (barline content)* barline %s* } -> {} 
+barline <- [][}[|zZ]
+content <- [^][}[|zZ]+
 ]])
 
 
@@ -30,11 +37,13 @@ local fn = arg[1]
 local f = io.open(fn)
 local s = f:read('*a')
 local s = url_decode(s)
-print(s)
+--print(s)
 local a, b = re.find(s, irealb_parser)
---print(serpent.block(b))
+print(serpent.block(b))
 
 for i, v in ipairs(b) do
-   print(i, v.composer, v.title, v.staff)
+   print(i, v.composer, v.title, v.staff.text)
+   a, b = re.find(v.staff.text, staff_parser)
+   print(a, serpent.block(b))
 end
 
