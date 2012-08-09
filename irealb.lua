@@ -27,12 +27,8 @@ sep <- '='
 
 local staff_parser = re.compile([[
 staff <- { staff_text }  -> {}
-staff_text <- ( staff_section + {content}?) -> {}
+staff_text <- ( staff_section + {content}? %S*) -> {}
 staff_section <- { content } ? ({ lmbarline } { content } )+ { rbarline }
-
---staff <- ( first_section mid_section* ) -> {}
---first_section <- ({ content } ? { lbarline } { content } ( { mbarline } { content } ) * { rbarline })
---mid_section <- 'x'
 
 barline <- lbarline / rbarline / mbarline
 lmbarline <- lbarline / mbarline
