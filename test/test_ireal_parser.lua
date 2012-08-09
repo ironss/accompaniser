@@ -79,6 +79,8 @@ function Test_irealb_staff:test_9_1_bar_simple_initial_content()
 end
 
 
+
+if false then
 Test_irealb_songbooks = {}
 
 
@@ -89,16 +91,17 @@ for i, v in ipairs(book) do
       assertNotEquals(v.title, '')
       assertNotEquals(v.style, '')
       assertNotEquals(v.key, '')
-      assertNotEquals(v.staff, '')
+      assertNotEquals(v.staff.text, '')
       
---      print(v.staff.text)
+      print(v.staff.text)
       err, staff = irealb.staff_parse(v.staff.text)
       print(serpent.block(v.staff))
       print(serpent.block(staff))
 --      assertNotEquals(staff, nil)
---      assertEquals(staff[#staff], 'Z')
+      assertEquals(staff[2][#staff[2]], string.sub(v.staff.text, -1, -1))
    end
 end
 
+end
 return LuaUnit:run()
 
