@@ -84,7 +84,7 @@ Test_irealb_songbooks = {}
 
 for i, v in ipairs(book) do
 --   print(i, v.composer, v.title)
-   Test_irealb_songbooks['disabled_test_' .. i] = function()
+   Test_irealb_songbooks['test_' .. i] = function()
       assertNotEquals(v.composer, '')
       assertNotEquals(v.title, '')
       assertNotEquals(v.style, '')
@@ -93,8 +93,8 @@ for i, v in ipairs(book) do
       
 --      print(v.staff.text)
       err, staff = irealb.staff_parse(v.staff.text)
---      print(serpent.block(v.staff))
---      print(serpent.block(staff))
+      print(serpent.block(v.staff))
+      print(serpent.block(staff))
 --      assertNotEquals(staff, nil)
 --      assertEquals(staff[#staff], 'Z')
    end
