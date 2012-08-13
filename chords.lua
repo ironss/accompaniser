@@ -20,7 +20,9 @@ local name_grammar = re.compile(
 
 local chord_tones_by_name = {
    ['']    = { 0, 4, 7 },
+   ['maj'] = { 0, 4, 7 },
    ['M']   = { 0, 4, 7 },
+   ['min'] = { 0, 3, 7 },
    ['m']   = { 0, 3, 7 },
    ['-']   = { 0, 3, 7 },
    ['+']   = { 0, 4, 8 },
@@ -57,19 +59,17 @@ local function name_parse(name)
    return result
 end
 
+-- Retrieve the chord tones, given a chord name
 local function make_chord(name, octave)
    local octave = octave or 4
    local chord = name_parse(name)
-   --print(serpent.block(chord))
    local root = chord.note
    local name = chord.chord
-   --print(root, name)
    local tones = chord_tones_by_name[name]
    local octave_offset = (octave+1) * 12
    for i = 1, #tones do
        tones[i] = tones[i] + octave_offset
     end
-   --print(serpent.block(tones))
    return tones
 end
 
