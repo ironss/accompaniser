@@ -82,6 +82,7 @@ local examples =
 {
    { 'C',    4, { 60, 64, 67 } },
    { 'Cm',   4, { 60, 63, 67 } },
+   { 'D',    4, { 62, 66, 69 } },
 }
 
 function Test_chords:test_tones()
@@ -90,7 +91,7 @@ function Test_chords:test_tones()
       assertIsNotNil(chord_tones)
 
       for i = 1, #c[3] do
-         assertEquals(c[3][i], chord_tones[i])
+         assertEquals(chord_tones[i], c[3][i])
       end
    end
 end

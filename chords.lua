@@ -41,15 +41,15 @@ local chord_tones_by_name = {
 
 local midi_name = 
 {
-   ['C']  = 60,
-   ['C#'] = 61,
-   ['Db'] = 61,
-   ['D']  = 62,
-   ['E']  = 64,
-   ['F']  = 65,
-   ['G']  = 67,
-   ['A']  = 69,
-   ['B']  = 71,
+   ['C']  =  0,
+   ['C#'] =  1,
+   ['Db'] =  1,
+   ['D']  =  2,
+   ['E']  =  4,
+   ['F']  =  5,
+   ['G']  =  7,
+   ['A']  =  9,
+   ['B']  = 11,
 }
 
 serpent=require('serpent')
@@ -63,14 +63,16 @@ end
 local function make_chord(name, octave)
    local octave = octave or 4
    local chord = name_parse(name)
-   local root = chord.note
-   local name = chord.chord
-   local tones = chord_tones_by_name[name]
+   local note = chord.note
+   local chord_name = chord.chord
+   local tones = chord_tones_by_name[chord_name]
+   local note_offset = midi_name[note]
    local octave_offset = (octave+1) * 12
+   t = {}
    for i = 1, #tones do
-       tones[i] = tones[i] + octave_offset
+       t[i] = tones[i] + note_offset + octave_offset
     end
-   return tones
+   return t
 end
 
 M.chords = chords
