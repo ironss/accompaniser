@@ -83,6 +83,7 @@ local examples =
    { 'C',    4, { 60, 64, 67 } },
    { 'Cm',   4, { 60, 63, 67 } },
    { 'D',    4, { 62, 66, 69 } },
+   { 'C6',   4, { 60, 64, 67, 69 } },
 }
 
 function Test_chords:test_tones()

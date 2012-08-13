@@ -30,40 +30,46 @@ local function schedule_bar(s)
    local current_bar = s.current_bar
    local bar = sequence[current_bar]
    local beats = sequence[current_bar].beats or sequence.time_signature[1] or 4
-   print(current_bar)
-   for _, c in ipairs(bar) do
-      for _, note in ipairs(c[3]) do
-         local t = s.now + c[1] * s.beat_duration
+   
+   local tempo = bar.tempo or sequence.tempo or 60
+   local beat_duration = 60/tempo * 1000
+   
+   for _, chord in ipairs(bar) do
+      for _, tone in ipairs(chord.tones) do
+         local t = s.now + chord[1] * beat_duration
          local channel = 1
          local velocity = 127
-         schedule_noteon(t, channel, note, velocity)
+         schedule_noteon(t, channel, tone, velocity)
       end
+   end
+   
+   local chords = tostring(current_bar)
+   for _, chord in ipairs(bar) do
+      chords = chords .. ' ' .. chord[2]
+   end
+   print(chords)
+   
+   for b = 1, beats do
+         local t = s.now + b * beat_duration
+         local channel = 10
+         local note = 75
+         local velocity = 127
+         schedule_noteon(t, channel, note, velocity)
    end
    
    s.current_bar = s.current_bar + 1
    if s.current_bar > #sequence then
+      s.repeat_count = s.repeat_count + 1
       s.current_bar = 1
-      if s.play_forever then
-         s.stop_now = false
-      else
+      print(s.repeat_count, s.nrepeats)
+      if not s.nrepeats and s.repeat_count > s.nrepeats then
          s.stop_now = true
       end
    end
 
---   for track, beats in ipairs(sequence) do
---      local instrument = 1
---      local channel = 1
---      local note = instrument[1][2]
---      local velocity = instrument[2]
---      for _, beat in ipairs(beats) do
---         local t = now + beat / subdiv * beat_duration
---         schedule_noteon(t, channel, note, velocity)
---      end
---   end
-
    if s.stop_now == false then
-      schedule_callback(s, s.now + beats/2 * s.beat_duration)
-      s.now = s.now + beats * s.beat_duration
+      schedule_callback(s, s.now + beats * beat_duration)
+      s.now = s.now + beats * beat_duration
    end
 end
 
@@ -90,9 +96,6 @@ local function new_synth(audio_driver, soundfont)
    s.sched_client_id = fluid.sequencer_register_client(s.sequencer, 'me', callback, nil)
    s.sfid = fluid.synth_sfload(s.synth, s.soundfont, true)
    
-   s.tempo = 120
-   s.beat_duration = 60/s.tempo * 1000
-
    return s
 end
 
@@ -100,16 +103,18 @@ end
 local function set_sequence(s, sequence)
    s.selected_sequence = sequence
    global_sequencer = s
+
    for _, bar in ipairs(sequence) do
       for _, c in ipairs(bar) do
-         c[3] = chords.make_chord(c[2])
-         print(serpent.block(c))
+         c.tones = chords.make_chord(c[2])
+         --print(serpent.block(c))
       end
    end
 end
 
-local function start(s, eternal)
-   s.play_forever = eternal or false
+local function start(s, repeats)
+   s.nrepeats = repeats or 3
+   s.repeat_count = 1
    s.current_bar = 1
    s.stop_now = false
    
