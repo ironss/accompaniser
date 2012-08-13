@@ -139,12 +139,12 @@ local typeFunctions =
 for _, v in ipairs(typeFunctions) do
    local f_is = function(value)
       local typename = string.lower(v)
-      assertIsType(value, v)
+      assertIsType(value, typename)
    end
 
    local f_isnot = function(value)
       local typename = string.lower(v)
-      assertIsNotType(value, v)
+      assertIsNotType(value, typename)
    end
 
    _G['assertIs' .. v] = f_is

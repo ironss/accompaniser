@@ -5,14 +5,14 @@ local M = {}
 re = require('re')
 local name_grammar = re.compile(
 [[
-   chord <- { root_note name !.}  -> {}
+   chord <- ( root_note chord_name !. )  -> {}
    
-   root_note <- {:note: (note_name sharp_or_flat ?) / numeral :} -> {}
+   root_note <- {:note: (note_name sharp_or_flat ?) / numeral :}
    note_name <- [ABCDEFG]
    sharp_or_flat <- 'b' / '#'
    numeral <- 'VII' / 'VI' / 'V' / 'IV' / 'III' / 'II' / 'I'
 
-   name <- {:chord: quality ? addition ? :} -> {}
+   chord_name <- {:chord: quality ? addition ? :}
    quality <- 'M' / 'maj' / 'min' / 'aug' / 'dim' / 'm' / '+' / '-' / 'o' / '0' / 'dom'
    addition <- seventh
    seventh <- '7' / 'M7'
@@ -50,17 +50,19 @@ local midi_name =
    ['B']  = 71,
 }
 
+serpent=require('serpent')
 local function name_parse(name)
-   return re.find(name, name_grammar)
+   local n, result = re.find(name, name_grammar)
+   print(serpent.block(result))
+   return result
 end
 
-serpent=require('serpent')
 local function make_chord(name, octave)
    local octave = octave or 4
-   local err, chord = name_parse(name)
+   local chord = name_parse(name)
    --print(serpent.block(chord))
-   local root = chord[2].note
-   local name = chord[3].chord
+   local root = chord.note
+   local name = chord.chord
    --print(root, name)
    local tones = chord_tones_by_name[name]
    local octave_offset = (octave+1) * 12
