@@ -47,5 +47,9 @@ M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
 M.parse = function(s) return re.find(s, irealb_parser) end
 M.staff_parse = function(s) return re.find(s, staff_parser) end
 
+
+
+M.transpose = 0
+
 return M
 
