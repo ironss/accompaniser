@@ -90,17 +90,6 @@ local function assertCompare(actual, expected, s, f)
 	end
 end
 
-local function assertIsType(value, expected, f)
-   local result, actual = f(value)
-	if not(result)  then
-		local errorMsg
-		errorMsg = "expected: "..wrapValue(expected)..", actual: "..wrapValue(actual)
-		print (errorMsg)
-		error( errorMsg, 3 )
-	end
-end
-
-
 local compareFunctions = 
 {
    { '==', 'Equals'    , function(a, e) return a == e end  },
@@ -118,21 +107,50 @@ for _, v in ipairs(compareFunctions) do
 end
 
 
+local function assertIsType(value, expected_type)
+   local actual_type = type(value)
+	if not(actual_type == expected_type)  then
+		local errorMsg
+		errorMsg = "expected: "..wrapValue(expected_type)..", actual: "..wrapValue(actual_type)
+		print (errorMsg)
+		error( errorMsg, 3 )
+	end
+end
+
+local function assertIsNotType(value, expected_type)
+   local actual_type = type(value)
+	if not(actual_type ~= expected_type)  then
+		local errorMsg
+		errorMsg = "expected: "..wrapValue(expected_type)..", actual: "..wrapValue(actual_type)
+		print (errorMsg)
+		error( errorMsg, 3 )
+	end
+end
+
 local typeFunctions = 
 {
-   { 'function', 'IsFunction', function(v) return type(v) == 'function', type(v) end },
-   { 'nil'     , 'IsNil'     , function(v) return type(v) == 'nil'     , type(v) end },
-   { 'number'  , 'IsNumber'  , function(v) return type(v) == 'number'  , type(v) end },
-   { 'string'  , 'IsString'  , function(v) return type(v) == 'string'  , type(v) end },
-   { 'table'   , 'IsTable'   , function(v) return type(v) == 'table'   , type(v) end },
+   'Function',
+   'Nil'     ,
+   'Number'  ,
+   'String'  ,
+   'Table'   ,
 }
 
 for _, v in ipairs(typeFunctions) do
-   local f = function(value)
-      assertIsType(value, v[1], v[3])
+   local f_is = function(value)
+      local typename = string.lower(v)
+      assertIsType(value, v)
    end
-   _G['assert' .. v[2]] = f
-   _G['assert_' .. string.lower(v[2])] = f
+
+   local f_isnot = function(value)
+      local typename = string.lower(v)
+      assertIsNotType(value, v)
+   end
+
+   _G['assertIs' .. v] = f_is
+   _G['assert_is_' .. string.lower(v)] = f_is
+   _G['assertIsNot' .. v] = f_isnot
+   _G['assert_is_not_' .. string.lower(v)] = f_isnot
 end
 
 assert_error = assertError
