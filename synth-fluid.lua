@@ -32,12 +32,12 @@ local function schedule_bar(s)
    local beats = sequence[current_bar].beats or sequence.time_signature[1] or 4
    print(current_bar)
    for _, c in ipairs(bar) do
-      
-      local t = s.now + c[1] * s.beat_duration
-      local channel = 1
-      local note = 60 + c[1]
-      local velocity = 127
-      schedule_noteon(t, channel, note, velocity)
+      for _, note in ipairs(c[3]) do
+         local t = s.now + c[1] * s.beat_duration
+         local channel = 1
+         local velocity = 127
+         schedule_noteon(t, channel, note, velocity)
+      end
    end
    
    s.current_bar = s.current_bar + 1
