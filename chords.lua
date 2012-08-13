@@ -3,8 +3,7 @@
 local M = {}
 
 re = require('re')
-local name_grammar = re.compile(
-[[
+local name_grammar = re.compile([[
    chord <- ( root_note chord_name !. )  -> {}
    
    root_note <- {:note: (note_name sharp_or_flat ?) / numeral :}
