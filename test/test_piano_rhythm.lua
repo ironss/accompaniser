@@ -1,5 +1,11 @@
 #! /usr/bin/env luajit
 
+print(package.path)
+print(package.cpath)
+
+package.path = package.path .. ';/usr/share/lua/5.1/?.lua'
+package.cpath = package.cpath .. ';/usr/lib/x86_64-linux-gnu/lua/5.1/?.so'
+
 
 local chords = require('chords')
 
