@@ -35,13 +35,37 @@ local function schedule_bar(s)
    local beat_duration = 60/tempo * 1000
    
    for _, chord in ipairs(bar) do
+      local chord_sum = 0
+      for _, tone in ipairs(chord.tones) do
+         chord_sum = chord_sum + tone
+      end
+      
+      print(chord_sum, s.last_chord_sum)
+      print(serpent.block(chord.tones))
+      if s.last_chord_sum ~= nil then
+         local diff = chord_sum - s.last_chord_sum
+         if diff > 12 then
+            chord.tones[#chord.tones] = chord.tones[#chord.tones] - 12
+            chord_sum = chord_sum - 12
+         elseif diff < -12 then
+            chord.tones[1] = chord.tones[1] + 12
+            chord_sum = chord_sum + 12
+         end
+      end
+      print(chord_sum, s.last_chord_sum)
+      print(serpent.block(chord.tones))
+      s.last_chord_sum = chord_sum
+
       for _, tone in ipairs(chord.tones) do
          local t = s.now + chord[1] * beat_duration
          local channel = 1
          local velocity = 127
          schedule_noteon(t, channel, tone, velocity)
       end
+      
    end
+   
+   
    
    local chords = tostring(current_bar)
    for _, chord in ipairs(bar) do
@@ -80,9 +104,15 @@ local callback = function(time, ev, seq, data)
    schedule_bar(s)
 end
 
+ffi=require('ffi')
 
 local function new_synth(audio_driver, soundfont)
    local s = {}
+
+   print(ffi.cast('void *', 0))
+   print(s)
+--   print(ffi.cast('void *', s))
+   
    
    s.audio_driver = audio_driver or 'pulseaudio'
    s.soundfont = soundfont or '/usr/share/sounds/sf2/FluidR3_GM.sf2'
