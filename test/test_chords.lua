@@ -1,5 +1,6 @@
 #! /usr/bin/lua
 
+package.path = './?/?.lua;' .. package.path
 require('luaunit')
 local serpent = require('serpent')
 

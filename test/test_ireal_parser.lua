@@ -1,7 +1,9 @@
 #! /usr/bin/lua
 
+package.path = './?/?.lua;' .. package.path
 require('luaunit')
 local serpent = require('serpent')
+
 local irealb = require('irealb')
 
 local fn = 'test/files/jazz-1.url'
