@@ -12,32 +12,58 @@ end
 
 
 local irealb_parser = re.compile([[
--- irealb_url <- 'irealbook://' url_encoded_irealbook
-
-irealbook <- ( scheme ? songbook  ) -> {}
+irealbook <- ( <scheme> ? <songbook>  ) -> {}
 scheme <- 'irealbook://'
-songbook <- ( song ( song * ) {:title: field? :} '\n'* )
-song <- ({:title: field :} ssep {:composer: field :} ssep {:style: field :} ssep {:key: field :} ssep {:xxx: field :} ssep {:staff: staff :} ssep) -> {} 
+songbook <- ( <song> ( <song> * ) {:title: <field>? :} '\n'* )
+song <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
 
-staff <- {:text: field :} -> {}
+tune <- {:text: <field> :} -> {}
 field <- [^=]*
-ssep <- sep %s*
+ssep <- <sep> %s*
 sep <- '='
 ]])
 
-local staff_parser = re.compile([[
-staff <- { staff_text }  -> {}
-staff_text <- ( staff_section + {content}? %S*) -> {}
-staff_section <- { content } ? ({ lmbarline } { content } )+ { rbarline }
 
-barline <- lbarline / rbarline / mbarline
-lmbarline <- lbarline / mbarline
+local song_parser = re.compile([[
+song <- ( <element> * ) -> {} .*
 
-lbarline <- '{' / '['
-rbarline <- '}' / ']' / 'z' / 'Z' /
-mbarline <- '|'
+element <- { <barline> 
+           / <label> 
+           / <timesig> 
+           / <chord>
+           / <altchord>
+           / <space> 
+           / <repeatbar> 
+           / <ending> 
+           / <end>
+           / <comment>
+           / <unknown>
+           }
 
-content <- [^][}{|zZ]+
+barline <- '[' / ']' / '{' / '}' / '|'
+
+label <- '*' <char>
+char <- [%l%u]
+
+timesig <- 'T' <digit> <digit>
+digit <- %d
+
+chord <- <note> <modifier>? <rootnote>?
+altchord <- '(' <chord> ')'
+
+note <- ([ABCDEFG] [#b]?)
+modifier <- ( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?
+degree <- '5' / '6' / '7' / '9' / '11' / '13'
+rootnote <- '/' <note>
+
+comment <- '<' [^>]* '>'
+ending <- 'N' [123]
+
+space <- ' ' / ','
+repeatbar <- 'x'
+end <- 'Z' / 'z'
+
+unknown <- 'Y' / 's' / 'l' / 'Q' / 'p' / 'r' / 'f' / 'U' / 'S' / 'n' / 'W'
 ]])
 
 
@@ -45,7 +71,7 @@ local M = {}
 
 M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
 M.parse = function(s) return re.find(s, irealb_parser) end
-M.staff_parse = function(s) return re.find(s, staff_parser) end
+M.song_parse = function(s) return re.find(s, song_parser) end
 
 
 

@@ -34,7 +34,7 @@ chord <- <note> <modifier>? <rootnote>?
 altchord <- '(' <chord> ')'
 
 note <- ([ABCDEFG] [#b]?)
-modifier <- [-+^ho]? [679]? ( [#b] [579] )?
+modifier <- [-+^ho]? [679]? ( [#b] [579] )*
 rootnote <- '/' <note>
 
 comment <- '<' [^>]* '>'
@@ -44,14 +44,14 @@ space <- ' ' / ','
 repeatbar <- 'x'
 end <- 'Z' / 'z'
 
-unknown <- 'Y' / 's' / 'l' / 'Q'
+unknown <- 'Y' / 's' / 'l' / 'Q' / 'p'
 ]])
 
 
 
 local M = {}
 
-M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
+M.url_parse = function(s) return re.match(url_decode(s), irealb_parser) end
 M.parse = function(s) return re.find(s, irealb_parser) end
 M.tune_parse = function(s) return re.match(s, tune_parser) end
 
@@ -70,13 +70,6 @@ for l in f:lines() do
    print(l)
    print()
 end
-
-
-
-
-
-
-
 
 
 

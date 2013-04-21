@@ -22,6 +22,11 @@ function Test_irealb:test_2_book_title()
    assertEquals(book.title, "Jazz - 1 of 4\n")
 end
 
+
+--print(serpent.block(book))
+
+
+--[[
 Test_irealb_staff = {}
 
 function Test_irealb_staff:test_1_bar_simple()
@@ -90,26 +95,28 @@ function Test_irealb_staff:test_1_bar_simple_trailing_space_content()
    assertEquals(staff[2][3], 'Z')
 end
 
+--]]
 
-if false then
+
+if true then
 Test_irealb_songbooks = {}
 
 
-for i, v in ipairs(book) do
---   print(i, v.composer, v.title)
+for i, song in ipairs(book) do
+--   print(i, song.composer, song.title)
    Test_irealb_songbooks['test_' .. i] = function()
-      assertNotEquals(v.composer, '')
-      assertNotEquals(v.title, '')
-      assertNotEquals(v.style, '')
-      assertNotEquals(v.key, '')
-      assertNotEquals(v.staff.text, '')
+      assertNotEquals(song.composer, '')
+      assertNotEquals(song.title, '')
+      assertNotEquals(song.style, '')
+      assertNotEquals(song.key, '')
+      assertNotEquals(song.tune.text, '')
       
-      print(v.staff.text)
-      err, staff = irealb.staff_parse(v.staff.text)
-      print(serpent.block(v.staff))
-      print(serpent.block(staff))
---      assertNotEquals(staff, nil)
-      assertEquals(staff[2][#staff[2]], string.sub(v.staff.text, -1, -1))
+--      print(song.tune.text)
+      err, tune = irealb.song_parse(song.tune.text)
+--      print(serpent.block(song.tune))
+--      print(serpent.block(tune))
+      r = table.concat(tune)
+      assertEquals(r, song.tune.text)
    end
 end
 
