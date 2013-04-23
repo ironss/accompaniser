@@ -1,0 +1,104 @@
+timesig <- 'T22' 
+         / 'T32'
+         / 'T24'
+         / 'T34'
+         / 'T44'
+         / 'T54'
+         / 'T64'
+         / 'T74'
+         / 'T68'
+         / 'T78'
+         / 'T98'
+         / 'T12'
+
+ending <- 'N0'
+        / 'N1'
+        / 'N2'
+        / 'N3'
+
+
+label <- '*A'
+       / '*B'
+       / '*C'
+       / '*D'
+       / '*v'
+       / '*i'
+       / 'Q'   -- coda
+       / 'S'   -- segno
+       / 'f'   -- fermata
+
+
+chord <- (note / 'W') quality? ( '/' note)?
+
+quality <-        
+^7
+-7
+7
+7sus
+h7
+o7
+5
+2
+add9
++
+o
+h
+sus
+^
+-
+^9
+^13
+6
+69
+^7#11
+^9#11
+^7#5
+-6
+-69
+-b6
+-^7
+-^9
+-9
+-11
+h9
+-7b5
+9
+7b9
+7#9
+7#11
+9#11
+9#5
+9b5
+7b5
+7#5
+7b13
+7#9#5
+7#9b5
+7#9#11
+7b9#11
+7b9b5
+7b9#5
+7b9#9
+7b9b13
+7alt
+13
+13#11
+13#9
+13b9
+7b9sus
+7susadd3
+9sus
+13sus
+7b13sus
+11
+
+
+symbol <- 'x'  -- repeat bar
+        / '%'  -- repeat 2 bars
+        / '/'  -- slash (beat)
+        / 'n'  -- no chord (NC)
+        
+staff_text <- '<' !'>'* '>'
+
+spacing <- 'YYY' / 'YY' / 'Y'
+
