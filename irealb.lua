@@ -29,7 +29,7 @@ song <- prefix? ( ({:pos: {} :} {:text: <element> :}) -> {} * ) -> {}
 
 prefix <- '1r34LbKcu7'
 
-element <- <barline> -> 'barline'
+element <- <barline>
            / <label> 
            / <symbol>
            / <timesig> 
