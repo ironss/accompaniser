@@ -38,7 +38,7 @@ element <- { <barline>
            / <repeatbar> 
            / <ending> 
            / <end>
-           / <comment>
+           / <staff_text>
            / <vspace>
            / <unknown>
            }
@@ -68,16 +68,17 @@ timesig <- 'T22'
          / 'T12'
          / 'T' %d %d
 
-chord <- ((<note> <quality>?) / 'W') <rootnote>?
+chord <- ((<note> / 'W') <quality>?) <rootnote>?
 altchord <- '(' <chord> ')'
 nochord <- 'n'
 
 note <- ([ABCDEFG] [#b]?)
-quality <- ( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?
+quality <-  ('*' [^*]* '*' ) / (( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?)
 degree <- '5' / '6' / '7' / '9' / '11' / '13'
 rootnote <- '/' <note>
 
-comment <- '<' [^>]* '>'
+staff_text <- '<' [^>]* '>'
+
 ending <- 'N0'
         / 'N1'
         / 'N2'
