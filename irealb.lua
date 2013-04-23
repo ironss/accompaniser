@@ -37,9 +37,9 @@ element <- { <barline>
            / <space> 
            / <repeatbar> 
            / <ending> 
-           / <end>
            / <staff_text>
            / <vspace>
+           / <end>
            / <unknown>
            }
 
@@ -84,16 +84,17 @@ ending <- 'N0'
         / 'N2'
         / 'N3'
 
-space <- ' ' / ',' / %nl
 repeatbar <- 'x'  -- repeat 1 bar 
            / 'r'  -- repeat 2 bars
            / 'p'  -- slash (beat)
 
-end <- 'Z'
-
+space <- ' ' / ',' / %nl
 vspace <- 'YYY' / 'YY' / 'Y'
 
-unknown <- 's' / 'l' / 'W' / 'U'
+end <- 'Z'
+
+unknown <- 's' / 'l' / 'U'
+
 ]])
 
 
