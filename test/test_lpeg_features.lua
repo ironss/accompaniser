@@ -40,7 +40,7 @@ parser1 =
 Test_parser1 = {}
 
 for i, test in ipairs(parser1.tests) do
-   Test_parser1['test_' .. i] = function()
+   Test_parser1['test_' .. string.format("%02d", i)] = function()
       local err, a1, a2 = re.find(test[1], parser1.parser)
       assertEquals(a1, test[1])
       assertEquals(a2, test[2])
@@ -79,7 +79,7 @@ parser2 =
 Test_parser2 = {}
 
 for i, test in ipairs(parser2.tests) do
-   Test_parser2['test_' .. i] = function()
+   Test_parser2['test_' .. string.format("%02d", i)] = function()
       local err, a1, a2 = re.find(test[1], parser2.parser)
       assertEquals(a1, test[1])
       assertEquals(a2, test[2])
