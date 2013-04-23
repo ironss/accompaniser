@@ -4,7 +4,7 @@ package.path = './?/?.lua;' .. package.path
 require('luaunit')
 local serpent = require('serpent')
 
-local irealb = require('irealb')
+local irealb = require('irealb_parser')
 
 local fn = 'test/files/jazz-1-irealbook.url'
 local f = io.open(fn)
