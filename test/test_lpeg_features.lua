@@ -10,80 +10,75 @@ function stringify(t) return serpent.line(t, { comment=false }) end
 require('luaunit')
 
 
-parser1 = 
-{
-   parser = re.compile([[
-		string <-  { <stuff> }
-		stuff <- ( <nested> / <word> <nested>? )* -> {}
-		word <- { %w+ }
-		nonword <- %W*
-		nested <- '(' <stuff> ')'
-	]]),
+parsers =
+{ 
+	{
+		name = "parser1",
+		parser = re.compile([[
+			string <-  { <stuff> }
+			stuff <- ( <nested> / <word> <nested>? )* -> {}
+			word <- { %w+ }
+			nonword <- %W*
+			nested <- '(' <stuff> ')'
+		]]),
 
-   tests = 
-   {
-		{ '',                   {}                                             },
-		{ 'a',                  { 'a' }                                        },
-		{ 'abc',                { 'abc' }                                      },
-		{ '(abc)',              { { 'abc' } }                                  },
-		{ '((abc))',            { { { 'abc' } } }                              },
-		{ 'abc(def)',           { 'abc', { 'def' } }                           },
-		{ '(abc)def',           { { 'abc' }, 'def' }                           },
-		{ 'abc(def)ghi',        { 'abc', { 'def' }, 'ghi' }                    },
-		{ 'abc(def)(ghi)',      { 'abc', { 'def' }, { 'ghi' } }                },
-		{ 'abc(def)(ghi)jkl',   { 'abc', { 'def' }, { 'ghi' }, 'jkl' }         },
-		{ 'abc(def)ghi(jkl)',   { 'abc', { 'def' }, 'ghi', { 'jkl' } }         },
-		{ 'abc(def(ghi)jkl)',   { 'abc', { 'def', { 'ghi' }, 'jkl' } }         },
-   }
+		tests = 
+		{
+			{ '',                   {}                                             },
+			{ 'a',                  { 'a' }                                        },
+			{ 'abc',                { 'abc' }                                      },
+			{ '(abc)',              { { 'abc' } }                                  },
+			{ '((abc))',            { { { 'abc' } } }                              },
+			{ 'abc(def)',           { 'abc', { 'def' } }                           },
+			{ '(abc)def',           { { 'abc' }, 'def' }                           },
+			{ 'abc(def)ghi',        { 'abc', { 'def' }, 'ghi' }                    },
+			{ 'abc(def)(ghi)',      { 'abc', { 'def' }, { 'ghi' } }                },
+			{ 'abc(def)(ghi)jkl',   { 'abc', { 'def' }, { 'ghi' }, 'jkl' }         },
+			{ 'abc(def)ghi(jkl)',   { 'abc', { 'def' }, 'ghi', { 'jkl' } }         },
+			{ 'abc(def(ghi)jkl)',   { 'abc', { 'def', { 'ghi' }, 'jkl' } }         },
+		}
+	},
+
+	{
+		name = "parser2",
+		parser = re.compile([[
+			string <-  { <stuff> }
+			stuff <- ( <nested> / <word> <nested>? )* -> {}
+			word <- ( <pos> {:t: %w+ :} ) -> {}
+			pos <- {:p: {} :}
+			nonword <- %W*
+			nested <- '(' <stuff> ')'
+		]]),
+
+		tests = 
+		{
+			{ '',                   {}                                                          },
+			{ 'a',                  { { p=1, t='a' } }                                          },
+			{ 'abc',                { { p=1, t='abc' } }                                        },
+			{ '(abc)',              { { { p=2, t='abc' } } }                                    },
+			{ '((abc))',            { { { { p=3, t='abc' } } } }                                },
+			{ 'abc(def)',           { { p=1, t='abc'} , { { p=5, t='def' } } }                  },
+			{ '(abc)def',           { { { p=2, t='abc' } }, { p=6, t='def' } }                  },
+			{ 'abc(def)ghi',        { { p=1, t='abc'} , { {p=5, t='def' } }, { p=9, t='ghi' } } },
+		--   { 'abc(def)(ghi)',      { 'abc', { 'def' }, { 'ghi' } }                },
+		--   { 'abc(def)(ghi)jkl',   { 'abc', { 'def' }, { 'ghi' }, 'jkl' }         },
+		--   { 'abc(def)ghi(jkl)',   { 'abc', { 'def' }, 'ghi', { 'jkl' } }         },
+		--   { 'abc(def(ghi)jkl)',   { 'abc', { 'def', { 'ghi' }, 'jkl' } }         },
+		}
+	},
 }
 
-Test_parser1 = {}
 
-for i, test in ipairs(parser1.tests) do
-   Test_parser1['test_' .. string.format("%02d", i)] = function()
-      local err, a1, a2 = re.find(test[1], parser1.parser)
-      assertEquals(a1, test[1])
-      assertEquals(a2, test[2])
-   end
-end
+Test_parsers = {}
 
-
-parser2 = 
-{
-   parser = re.compile([[
-		string <-  { <stuff> }
-		stuff <- ( <nested> / <word> <nested>? )* -> {}
-		word <- ( <pos> {:t: %w+ :} ) -> {}
-		pos <- {:p: {} :}
-		nonword <- %W*
-		nested <- '(' <stuff> ')'
-	]]),
-
-   tests = 
-   {
-		{ '',                   {}                                                          },
-		{ 'a',                  { { p=1, t='a' } }                                          },
-		{ 'abc',                { { p=1, t='abc' } }                                        },
-		{ '(abc)',              { { { p=2, t='abc' } } }                                    },
-		{ '((abc))',            { { { { p=3, t='abc' } } } }                                },
-		{ 'abc(def)',           { { p=1, t='abc'} , { { p=5, t='def' } } }                  },
-		{ '(abc)def',           { { { p=2, t='abc' } }, { p=6, t='def' } }                  },
-		{ 'abc(def)ghi',        { { p=1, t='abc'} , { {p=5, t='def' } }, { p=9, t='ghi' } } },
-	--   { 'abc(def)(ghi)',      { 'abc', { 'def' }, { 'ghi' } }                },
-	--   { 'abc(def)(ghi)jkl',   { 'abc', { 'def' }, { 'ghi' }, 'jkl' }         },
-	--   { 'abc(def)ghi(jkl)',   { 'abc', { 'def' }, 'ghi', { 'jkl' } }         },
-	--   { 'abc(def(ghi)jkl)',   { 'abc', { 'def', { 'ghi' }, 'jkl' } }         },
-	}
-}
-
-Test_parser2 = {}
-
-for i, test in ipairs(parser2.tests) do
-   Test_parser2['test_' .. string.format("%02d", i)] = function()
-      local err, a1, a2 = re.find(test[1], parser2.parser)
-      assertEquals(a1, test[1])
-      assertEquals(a2, test[2])
-   end
+for _, p in ipairs(parsers) do
+	for i, test in ipairs(p.tests) do
+		Test_parsers['test_' .. p.name .. '_' .. string.format("%02d", i)] = function()
+		   local err, a1, a2 = re.find(test[1], p.parser)
+		   assertEquals(a1, test[1])
+		   assertEquals(a2, test[2])
+		end
+	end
 end
 
 
