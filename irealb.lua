@@ -25,11 +25,11 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- prefix? ( <element> * ) -> {}
+song <- prefix? ( ({:pos: {} :} {:text: <element> :}) -> {} * ) -> {}
 
 prefix <- '1r34LbKcu7'
 
-element <- { <barline> 
+element <- <barline> -> 'barline'
            / <label> 
            / <symbol>
            / <timesig> 
@@ -43,7 +43,7 @@ element <- { <barline>
            / <vspace>
            / <end>
            / <unknown>
-           }
+
 
 barline <- '[' / ']' / '{' / '}' / '|'
 

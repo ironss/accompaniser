@@ -117,7 +117,10 @@ for i, song in ipairs(book) do
       err, tune = irealb.song_parse(song.tune.text)
 --      print(serpent.block(song.tune))
 --      print(serpent.block(tune))
-      r = table.concat(tune)
+      r = ''
+      for _, element in ipairs(tune) do
+         r = r .. element.text
+      end
       assertEquals(r, song.tune.text)
    end
 end
