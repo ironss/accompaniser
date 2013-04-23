@@ -68,7 +68,7 @@ timesig <- 'T22'
          / 'T78'
          / 'T98'
          / 'T12'
-         / 'T' %d %d
+--         / 'T' %d %d
 
 chord <- ((<note> / 'W') <quality>?) <rootnote>?
 altchord <- '(' <chord> ')'
