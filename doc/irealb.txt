@@ -7,26 +7,6 @@ Now, however, the songs are stored as a URL with scheme 'irealb:', and there
 seems to be a layer of obfuscation added to the tune encoding format. I think
 that the underlying text encoding is still the same.
 
-
-timesig <- 'T22' 
-         / 'T32'
-         / 'T24'
-         / 'T34'
-         / 'T44'
-         / 'T54'
-         / 'T64'
-         / 'T74'
-         / 'T68'
-         / 'T78'
-         / 'T98'
-         / 'T12'
-
-ending <- 'N0'
-        / 'N1'
-        / 'N2'
-        / 'N3'
-
-
 label <- '*A'
        / '*B'
        / '*C'
