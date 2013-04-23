@@ -13,7 +13,7 @@ end
 
 local irealb_parser = re.compile([[
 irealbook <- ( <scheme> ? <songbook>  ) -> {}
-scheme <- 'irealbook://'
+scheme <- 'irealbook://' / 'irealb://'
 songbook <- ( <song> ( <song> * ) {:title: <field>? :} '\n'* )
 song <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
 
@@ -25,10 +25,11 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- ( <element> * ) -> {} .*
+song <- ( <element> * ) -> {}
 
 element <- { <barline> 
            / <label> 
+           / <symbol>
            / <timesig> 
            / <chord>
            / <altchord>
@@ -37,33 +38,40 @@ element <- { <barline>
            / <ending> 
            / <end>
            / <comment>
+           / <vspace>
            / <unknown>
            }
 
 barline <- '[' / ']' / '{' / '}' / '|'
 
-label <- '*' <char>
-char <- [%l%u]
+label <- '*' <labelchar>
+labelchar <- [ABCDvi]
+
+symbol <- 'Q' -- coda
+        / 'S' -- segno
+        / 'f' -- fermata
 
 timesig <- 'T' <digit> <digit>
 digit <- %d
 
-chord <- <note> <modifier>? <rootnote>?
+chord <- ((<note> <quality>?) / 'W') <rootnote>?
 altchord <- '(' <chord> ')'
 
 note <- ([ABCDEFG] [#b]?)
-modifier <- ( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?
+quality <- ( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?
 degree <- '5' / '6' / '7' / '9' / '11' / '13'
 rootnote <- '/' <note>
 
 comment <- '<' [^>]* '>'
 ending <- 'N' [123]
 
-space <- ' ' / ','
+space <- ' ' / ',' / %nl
 repeatbar <- 'x'
 end <- 'Z' / 'z'
 
-unknown <- 'Y' / 's' / 'l' / 'Q' / 'p' / 'r' / 'f' / 'U' / 'S' / 'n' / 'W'
+vspace <- 'YYY' / 'YY' / 'Y'
+
+unknown <- 's' / 'l' / 'W' / 'p' / 'r' / 'U' / 'n'
 ]])
 
 

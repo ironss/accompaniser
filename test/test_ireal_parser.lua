@@ -6,10 +6,12 @@ local serpent = require('serpent')
 
 local irealb = require('irealb')
 
-local fn = 'test/files/jazz-1.url'
+local fn = 'test/files/jazz-1-irealbook.url'
 local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
+
+-- print(serpent.block(book))
 
 
 Test_irealb = {}
@@ -103,7 +105,7 @@ Test_irealb_songbooks = {}
 
 
 for i, song in ipairs(book) do
---   print(i, song.composer, song.title)
+--    print(i, song.composer, song.title)
    Test_irealb_songbooks['test_' .. i] = function()
       assertNotEquals(song.composer, '')
       assertNotEquals(song.title, '')
