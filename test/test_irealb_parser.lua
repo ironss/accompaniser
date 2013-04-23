@@ -102,12 +102,12 @@ end
 
 
 if true then
-Test_irealb_songbooks = {}
+Test_parse_irealb_corpus = {}
 
 
 for i, song in ipairs(book) do
 --    print(i, song.composer, song.title)
-   Test_irealb_songbooks['test_' .. i] = function()
+   Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
       assertNotEquals(song.composer, '')
       assertNotEquals(song.title, '')
       assertNotEquals(song.style, '')
