@@ -1,3 +1,13 @@
+When I first started looking at irealb (2 years ago?), songs were stored
+on the forum as a URL with scheme 'irealbook:'. The songbook and song 
+information was quite obvious, and the tune was encoded in a text string that 
+looked easy to parse.
+
+Now, however, the songs are stored as a URL with scheme 'irealb:', and there
+seems to be a layer of obfuscation added to the tune encoding format. I think
+that the underlying text encoding is still the same.
+
+
 timesig <- 'T22' 
          / 'T32'
          / 'T24'

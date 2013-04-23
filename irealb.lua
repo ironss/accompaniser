@@ -51,8 +51,21 @@ symbol <- 'Q' -- coda
         / 'S' -- segno
         / 'f' -- fermata
 
-timesig <- 'T' <digit> <digit>
-digit <- %d
+-- Valid signatures are identified explicitly, but a fall-through that allows
+-- any digits is added at the end.
+timesig <- 'T22' 
+         / 'T32'
+         / 'T24'
+         / 'T34'
+         / 'T44'
+         / 'T54'
+         / 'T64'
+         / 'T74'
+         / 'T68'
+         / 'T78'
+         / 'T98'
+         / 'T12'
+         / 'T' %d %d
 
 chord <- ((<note> <quality>?) / 'W') <rootnote>?
 altchord <- '(' <chord> ')'
