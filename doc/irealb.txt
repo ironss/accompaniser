@@ -7,20 +7,15 @@ Now, however, the songs are stored as a URL with scheme 'irealb:', and there
 seems to be a layer of obfuscation added to the tune encoding format. I think
 that the underlying text encoding is still the same.
 
-label <- '*A'
-       / '*B'
-       / '*C'
-       / '*D'
-       / '*v'
-       / '*i'
-       / 'Q'   -- coda
-       / 'S'   -- segno
-       / 'f'   -- fermata
 
 
-chord <- (note / 'W') quality? ( '/' note)?
+A chord consists of a note-name followed by an optional quality. The ones that
+irealb displays properly are shown below. Any other text can be used instead,
+if it is surrounded by '*'
 
-quality <-        
+Chord qualities
+===============
+
 ^7
 -7
 7
@@ -81,14 +76,4 @@ h9
 13sus
 7b13sus
 11
-
-
-symbol <- 'x'  -- repeat bar
-        / '%'  -- repeat 2 bars
-        / '/'  -- slash (beat)
-        / 'n'  -- no chord (NC)
-        
-staff_text <- '<' !'>'* '>'
-
-spacing <- 'YYY' / 'YY' / 'Y'
 
