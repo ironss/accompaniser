@@ -25,7 +25,9 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- ( <element> * ) -> {}
+song <- prefix? ( <element> * ) -> {}
+
+prefix <- '1r34LbKcu7'
 
 element <- { <barline> 
            / <label> 
@@ -93,7 +95,9 @@ vspace <- 'YYY' / 'YY' / 'Y'
 
 end <- 'Z'
 
-unknown <- 's' / 'l' / 'U'
+unknown <- 's' -- small 's' above chord
+         / 'l' -- small 'N' above chord
+         / 'U' -- ???
 
 ]])
 
