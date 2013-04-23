@@ -95,8 +95,8 @@ vspace <- 'YYY' / 'YY' / 'Y'
 
 end <- 'Z'
 
-unknown <- 's' -- small 's' above chord
-         / 'l' -- small 'N' above chord
+unknown <- 's' -- small size chord
+         / 'l' -- normal size chord
          / 'U' -- ???
 
 ]])
