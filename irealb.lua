@@ -25,7 +25,7 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- prefix? ( ({:pos: {} :} {:text: <element> :}) -> {} * ) -> {}
+song <- <prefix>? ( ({:pos: {} :} {:text: <element> :}) -> {} * ) -> {}
 
 prefix <- '1r34LbKcu7'
 
@@ -39,7 +39,7 @@ element <- <barline>
            / <space> 
            / <repeatbar> 
            / <ending> 
-           / <staff_text>
+           / <stafftext>
            / <vspace>
            / <end>
            / <unknown>
@@ -79,7 +79,7 @@ quality <-  ('*' [^*]* '*' ) / (( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree>
 degree <- '5' / '6' / '7' / '9' / '11' / '13'
 rootnote <- '/' <note>
 
-staff_text <- '<' [^>]* '>'
+stafftext <- '<' [^>]* '>'
 
 ending <- 'N0'
         / 'N1'
