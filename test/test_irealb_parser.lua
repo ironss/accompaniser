@@ -66,7 +66,7 @@ local s = f:read('*a')
 local err, book = irealb.url_parse(s)
 --print(serpent.block(book))
 
-if false then
+if true then
 	Test_irealbook = {}
 
 	function Test_irealbook:test_1_number_of_songs()
@@ -79,7 +79,7 @@ if false then
 	end
 end
 
-if false then
+if true then
 	Test_parse_irealbook_corpus = {}
 
 	for i, song in ipairs(book) do
@@ -117,11 +117,11 @@ local s = f:read('*a')
 local err, book = irealb.url_parse(s)
 --print(url_decode(s))
 
-if false then
+if true then
 	Test_irealb = {}
 
 	function Test_irealb:test_1_number_of_songs()
-		assertEquals(#book, 650)
+		assertEquals(#book, 325)
 	end
 
 	function Test_irealb:test_2_book_params()
