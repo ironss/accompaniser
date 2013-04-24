@@ -140,17 +140,18 @@ if true then
 	--    print(i, song.composer, song.title)
 		Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
 		   assertNotEquals(song.composer, '')
-	--      assertNotEquals(song.title, '')
-	--      assertNotEquals(song.style, '')
-	--      assertNotEquals(song.key, '')
-	--      assertNotEquals(song.tune.raw, '')
+         assertNotEquals(song.title, '')
+         assertNotEquals(song.style, '')
+         assertNotEquals(song.key, '')
+         assertNotEquals(song.tune.raw, '')
 		   
 		   if song.tune.key ~= nil then
 		      song.tune.text = irealb.unobfusc(song.tune.raw, song.tune.key)
 		   end
 
---	      print(song.tune.raw)
---	      print(song.tune.text)
+--       print(song.tune.raw)
+         print(song.title)
+         print(song.tune.text)
          err, tune_text, tune = irealb.song_parse(song.tune.text)
 --      print(serpent.block(song))
 --	      print(serpent.block(tune))
