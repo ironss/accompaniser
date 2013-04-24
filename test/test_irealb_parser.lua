@@ -3,6 +3,7 @@
 package.path = './?/?.lua;' .. package.path
 require('luaunit')
 local serpent = require('serpent')
+local function stringify(t) return serpent.line(t, {comment=false} ) end
 
 local irealb = require('irealb_parser')
 
@@ -23,19 +24,18 @@ function Test_irealb:test_2_book_title()
 end
 
 
-Test_irealb_staff = {}
+Test_irealb_tune = {}
 
---[[
-function Test_irealb_staff:test_1_bar_simple()
+function Test_irealb_tune:test_1_bar_simple()
    local s = "|G C Z"
-   local err, staff = irealb.song_parse(s)
-   print(serpent.block(staff))
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1].text, '|')
-   assertEquals(staff[2][2], 'G C ')
-   assertEquals(staff[2][3], 'Z')
+   local expected = {{pos = 1, text = "|"}, {pos = 2, text = "G"}, {pos = 3, text = " "}, {pos = 4, text = "C"}, {pos = 5, text = " "}, {pos = 6, text = "Z"}}
+   local err, tune_text, tune = irealb.song_parse(s)
+
+   assertEquals(tune_text, s)
+   assertEquals(stringify(tune), stringify(expected))
 end
 
+--[[
 function Test_irealb_staff:test_1_bar_repeat()
    local s = "{G C }"
    local err, staff = irealb.song_parse(s)

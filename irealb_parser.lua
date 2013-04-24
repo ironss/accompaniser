@@ -26,7 +26,7 @@ sep <- '='
 
 local song_parser = re.compile([[
 song <- { <songcapture> }
-songcapture <- prefix? ( <elementcapture> )* -> {}
+songcapture <- <prefix>? ( <elementcapture> )* -> {}
 
 prefix <- '1r34LbKcu7'
 
