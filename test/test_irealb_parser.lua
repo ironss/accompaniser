@@ -34,7 +34,7 @@ local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
 
-if true then
+if false then
 	Test_irealbook = {}
 
 	function Test_irealbook:test_1_number_of_songs()
@@ -47,7 +47,7 @@ if true then
 	end
 end
 
-if true then
+if false then
 	Test_parse_irealbook_corpus = {}
 
 	for i, song in ipairs(book) do
@@ -99,7 +99,7 @@ if false then
 	end
 end
 
-if false then
+if true then
 	Test_parse_irealb_corpus = {}
 
 	for i, song in ipairs(book) do
@@ -116,9 +116,10 @@ if false then
 		   else
 		      song.tune.text = song.tune.raw
 		   end
-	--      print(song.tune.text)
-		   err, tune_text, tune = irealb.song_parse(song.tune.text)
-	      print(serpent.block(song))
+		   print(song.tune.raw)
+	      print(song.tune.text)
+	--	   err, tune_text, tune = irealb.song_parse(song.tune.text)
+	--      print(serpent.block(song))
 	--      print(serpent.block(tune))
 		   r = ''
 		   for _, element in ipairs(tune) do
@@ -128,7 +129,6 @@ if false then
 	--      assertEquals(tune_text, song.tune.text)
 		end
 	end
-
 end
 
 return LuaUnit:run()

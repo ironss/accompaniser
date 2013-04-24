@@ -17,10 +17,28 @@ irealbookurl <- {:scheme: 'irealbook' :} '://' <irealbooksongbook>
 irealburl <- {:scheme: 'irealb' :} '://' <irealbsongbook>
 
 irealbooksongbook <- ( <irealbooksong> ( <irealbooksong> * ) {:title: <field>? :} '\n'* )
-irealbooksong <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
+irealbooksong <- ( {:title: <field> :} <ssep> 
+                   {:composer: <field> :} <ssep> 
+                   {:style: <field> :} <ssep> 
+                   {:key: <field> :} <ssep> 
+                   {:x1: <field> :} <ssep> 
+                   {:tune: <tune> :} <ssep>
+                 ) -> {} 
 
 irealbsongbook <- ( <irealbsong> ( <irealbsong> * ) {:title: <field>? :} '\n'* )
-irealbsong <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
+irealbsong <- ( {:title: <field> :} <ssep> 
+                {:composer: <field> :} <ssep> 
+                {:x1: <field> :} <ssep> 
+                {:style: <field> :} <ssep> 
+                {:key: <field> :} <ssep> 
+                {:x2: <field> :} <ssep> 
+                {:tune: <tune> :} <ssep>
+                {:x3: <field> :} <ssep> 
+                {:x4: <field> :} <ssep> 
+                {:x5: <field> :} <ssep> 
+                {:x6: <field> :} <ssep> 
+                {:x7: <field> :} <ssep> 
+              ) -> {} 
 
 tune <- {:raw: <field> :} -> {}
 field <- [^=]*
