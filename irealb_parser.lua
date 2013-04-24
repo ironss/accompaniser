@@ -129,6 +129,12 @@ unknown <- 's' -- small size chord
          / 'l' -- normal size chord
          / 'U' -- ???
 
+         / 'L'
+         / 'X'
+         / 'y'
+         / 'K'
+         / 'c'
+
 ]])
 
 
