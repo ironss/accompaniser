@@ -25,13 +25,13 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- { <songcap> }
-songcap <- ( <elementcap> )* -> {}
+song <- { <songcapture> }
+songcapture <- prefix? ( <elementcapture> )* -> {}
 
 prefix <- '1r34LbKcu7'
 
-elementcap <- (<poscap> {:text: { <element> } :}) -> {}
-poscap <- {:pos: {} :}
+elementcapture <- (<pos> {:text: { <element> } :}) -> {}
+pos <- {:pos: {} :}
 
 element <- <barline>
          / <label> 

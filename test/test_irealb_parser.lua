@@ -117,6 +117,7 @@ for i, song in ipairs(book) do
          r = r .. element.text
       end
       assertEquals(r, song.tune.text)
+      assertEquals(tune_text, song.tune.text)
    end
 end
 
