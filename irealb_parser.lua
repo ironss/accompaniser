@@ -13,11 +13,11 @@ end
 
 local irealb_parser = re.compile([[
 irealbook <- ( <scheme> ? <songbook>  ) -> {}
-scheme <- {:scheme: 'irealbook:' / 'irealb:' :} '//'
+scheme <- {:scheme: 'irealbook' / 'irealb' :} '://'
 songbook <- ( <song> ( <song> * ) {:title: <field>? :} '\n'* )
 song <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
 
-tune <- {:text: <field> :} -> {}
+tune <- {:raw: <field> :} -> {}
 field <- [^=]*
 ssep <- <sep> %s*
 sep <- '='
@@ -113,6 +113,7 @@ M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
 M.parse = function(s) return re.find(s, irealb_parser) end
 M.song_parse = function(s) return re.find(s, song_parser) end
 
+M.unobfusc = function(s) return s end
 
 
 M.transpose = 0

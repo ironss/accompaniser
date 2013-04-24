@@ -7,23 +7,6 @@ local function stringify(t) return serpent.line(t, {comment=false} ) end
 
 local irealb = require('irealb_parser')
 
-local fn = 'test/files/jazz-1-irealbook.url'
-local f = io.open(fn)
-local s = f:read('*a')
-local err, book = irealb.url_parse(s)
-
-
-Test_irealb = {}
-
-function Test_irealb:test_1_number_of_songs()
-   assertEquals(#book, 300)
-end
-
-function Test_irealb:test_2_book_params()
-   assertEquals(book.title, "Jazz - 1 of 4\n")
-   assertEquals(book.scheme, "irealbook:")
-end
-
 
 Test_irealb_tune = {}
 
@@ -45,30 +28,106 @@ function Test_irealb_tune:test_1_bar_repeat()
 end
 
 
-if true then
-Test_parse_irealb_corpus = {}
 
-for i, song in ipairs(book) do
---    print(i, song.composer, song.title)
-   Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
-      assertNotEquals(song.composer, '')
-      assertNotEquals(song.title, '')
-      assertNotEquals(song.style, '')
-      assertNotEquals(song.key, '')
-      assertNotEquals(song.tune.text, '')
-      
---      print(song.tune.text)
-      err, tune_text, tune = irealb.song_parse(song.tune.text)
---      print(serpent.block(song.tune))
---      print(serpent.block(tune))
-      r = ''
-      for _, element in ipairs(tune) do
-         r = r .. element.text
-      end
-      assertEquals(r, song.tune.text)
-      assertEquals(tune_text, song.tune.text)
-   end
+local fn = 'test/files/jazz-1-irealbook.url'
+local f = io.open(fn)
+local s = f:read('*a')
+local err, book = irealb.url_parse(s)
+
+if false then
+	Test_irealbook = {}
+
+	function Test_irealbook:test_1_number_of_songs()
+		assertEquals(#book, 300)
+	end
+
+	function Test_irealbook:test_2_book_params()
+		assertEquals(book.title, "Jazz - 1 of 4\n")
+		assertEquals(book.scheme, "irealbook")
+	end
 end
+
+if false then
+	Test_parse_irealbook_corpus = {}
+
+	for i, song in ipairs(book) do
+	--    print(i, song.composer, song.title)
+		Test_parse_irealbook_corpus['test_' .. string.format("%03d", i)] = function()
+		   assertNotEquals(song.composer, '')
+        assertNotEquals(song.title, '')
+	      assertNotEquals(song.style, '')
+	      assertNotEquals(song.key, '')
+	      assertNotEquals(song.tune.raw, '')
+		   
+		   if book.scheme == 'irealb' then
+		      song.tune.text = irealb.unobfusc(song.tune.raw)
+		   else
+		      song.tune.text = song.tune.raw
+		   end
+	--      print(song.tune.text)
+		   err, tune_text, tune = irealb.song_parse(song.tune.text)
+	--      print(serpent.block(song.tune))
+	--      print(serpent.block(tune))
+		   r = ''
+		   for _, element in ipairs(tune) do
+		      r = r .. element.text
+		   end
+	      assertEquals(r, song.tune.text)
+	      assertEquals(tune_text, song.tune.text)
+		end
+	end
+
+end
+
+
+local fn = 'test/files/jazz-1-irealb.url'
+local f = io.open(fn)
+local s = f:read('*a')
+local err, book = irealb.url_parse(s)
+print(url_decode(s))
+
+if false then
+	Test_irealb = {}
+
+	function Test_irealb:test_1_number_of_songs()
+		assertEquals(#book, 650)
+	end
+
+	function Test_irealb:test_2_book_params()
+		assertEquals(book.title, "Jazz 1 of 4\n")
+		assertEquals(book.scheme, "irealb")
+	end
+end
+
+if false then
+	Test_parse_irealb_corpus = {}
+
+	for i, song in ipairs(book) do
+	--    print(i, song.composer, song.title)
+		Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
+		   assertNotEquals(song.composer, '')
+	--      assertNotEquals(song.title, '')
+	--      assertNotEquals(song.style, '')
+	--      assertNotEquals(song.key, '')
+	--      assertNotEquals(song.tune.raw, '')
+		   
+		   if book.scheme == 'irealb' then
+		      song.tune.text = irealb.unobfusc(song.tune.raw)
+		   else
+		      song.tune.text = song.tune.raw
+		   end
+	--      print(song.tune.text)
+		   err, tune_text, tune = irealb.song_parse(song.tune.text)
+	      print(serpent.block(song))
+	--      print(serpent.block(tune))
+		   r = ''
+		   for _, element in ipairs(tune) do
+		      r = r .. element.text
+		   end
+	--      assertEquals(r, song.tune.text)
+	--      assertEquals(tune_text, song.tune.text)
+		end
+	end
 
 end
 
