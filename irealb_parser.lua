@@ -12,10 +12,15 @@ end
 
 
 local irealb_parser = re.compile([[
-songbookurl <- ( <irealbookurl> ) -> {}
-irealbookurl <- {:scheme: 'irealbook' :} '://' <songbook>
-songbook <- ( <song> ( <song> * ) {:title: <field>? :} '\n'* )
-song <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
+songbookurl <- ( <irealbookurl> / <irealburl> ) -> {}
+irealbookurl <- {:scheme: 'irealbook' :} '://' <irealbooksongbook>
+irealburl <- {:scheme: 'irealb' :} '://' <irealbsongbook>
+
+irealbooksongbook <- ( <irealbooksong> ( <irealbooksong> * ) {:title: <field>? :} '\n'* )
+irealbooksong <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
+
+irealbsongbook <- ( <irealbsong> ( <irealbsong> * ) {:title: <field>? :} '\n'* )
+irealbsong <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
 
 tune <- {:raw: <field> :} -> {}
 field <- [^=]*
