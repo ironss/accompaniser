@@ -28,7 +28,7 @@ Test_irealb_tune = {}
 
 function Test_irealb_tune:test_1_bar_simple()
    local s = "|G C Z"
-   local expected = {{pos = 1, text = "|"}, {pos = 2, text = "G"}, {pos = 3, text = " "}, {pos = 4, text = "C"}, {pos = 5, text = " "}, {pos = 6, text = "Z"}}
+   local expected = {{pos=1, text="|", elem='barline'}, {pos=2, text="G", elem='chord'}, {pos=3, text=" ", elem='space'}, {pos=4, text="C", elem='chord'}, {pos=5, text=" ", elem='space'}, {pos=6, text = "Z", elem='end'}}
    local err, tune_text, tune = irealb.song_parse(s)
 
    assertEquals(tune_text, s)

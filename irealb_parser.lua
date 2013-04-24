@@ -30,23 +30,23 @@ songcapture <- <prefix>? ( <elementcapture> )* -> {}
 
 prefix <- '1r34LbKcu7'
 
-elementcapture <- (<pos> {:text: { <element> } :}) -> {}
+elementcapture <- <element> -> {}
 pos <- {:pos: {} :}
 
-element <- <barline>
-         / <label> 
-         / <symbol>
-         / <timesig> 
-         / <chord>
-         / <altchord>
-         / <nochord>
-         / <space> 
-         / <repeatbar> 
-         / <ending> 
-         / <stafftext>
-         / <vspace>
-         / <end>
-         / <unknown>
+element <- <pos> {:text:  <barline>   :} {:elem: '' -> 'barline'   :}
+         / <pos> {:text:  <label>     :} {:elem: '' -> 'label'     :}
+         / <pos> {:text:  <symbol>    :} {:elem: '' -> 'symbol'    :}
+         / <pos> {:text:  <timesig>   :} {:elem: '' -> 'timesig'   :}
+         / <pos> {:text:  <chord>     :} {:elem: '' -> 'chord'     :}
+         / <pos> {:text:  <altchord>  :} {:elem: '' -> 'altchord'  :}
+         / <pos> {:text:  <nochord>   :} {:elem: '' -> 'nochord'   :}
+         / <pos> {:text:  <space>     :} {:elem: '' -> 'space'     :}
+         / <pos> {:text:  <repeatbar> :} {:elem: '' -> 'repeatbar' :} 
+         / <pos> {:text:  <ending>    :} {:elem: '' -> 'ending'    :}
+         / <pos> {:text:  <stafftext> :} {:elem: '' -> 'stafftext' :}
+         / <pos> {:text:  <vspace>    :} {:elem: '' -> 'vspace'    :}
+         / <pos> {:text:  <end>       :} {:elem: '' -> 'end'       :}
+         / <pos> {:text:  <unknown>   :} {:elem: '' -> 'unknown'   :}
 
 barline <- '[' / ']' / '{' / '}' / '|'
 
