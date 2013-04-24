@@ -43,8 +43,9 @@ parsers =
 		name = "parser2",
 		parser = re.compile([[
 			string <-  { <stuff> }
-			stuff <- ( <nested> / <word> <nested>? )* -> {}
-			word <- ( <pos> {:t: %w+ :} ) -> {}
+			stuff <- ( <nested> / <wordc> <nested>? )* -> {}
+			wordc <- ( <pos> {:t: <word> :} ) -> {}
+			word <- %w+
 			pos <- {:p: {} :}
 			nonword <- %W*
 			nested <- '(' <stuff> ')'
@@ -76,7 +77,7 @@ for _, p in ipairs(parsers) do
 		Test_parsers['test_' .. p.name .. '_' .. string.format("%02d", i)] = function()
 		   local err, a1, a2 = re.find(test[1], p.parser)
 		   assertEquals(a1, test[1])
-		   assertEquals(a2, test[2])
+		   assertEquals(stringify(a2), stringify(test[2]))
 		end
 	end
 end
