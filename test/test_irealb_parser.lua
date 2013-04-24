@@ -34,7 +34,7 @@ local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
 
-if false then
+if true then
 	Test_irealbook = {}
 
 	function Test_irealbook:test_1_number_of_songs()
@@ -47,7 +47,7 @@ if false then
 	end
 end
 
-if false then
+if true then
 	Test_parse_irealbook_corpus = {}
 
 	for i, song in ipairs(book) do
@@ -84,7 +84,7 @@ local fn = 'test/files/jazz-1-irealb.url'
 local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
-print(url_decode(s))
+--print(url_decode(s))
 
 if false then
 	Test_irealb = {}
