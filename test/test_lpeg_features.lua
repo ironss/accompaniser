@@ -73,10 +73,10 @@ parsers =
 		parser = re.compile([[
 			string <-  { <stuff> }
 			stuff <- ( <nested> / <wordornumc> <nested>? )* -> {}
-			wordornumc <- <wordornum> 
+			wordornumc <- <wordornum> -> {}
 			wordornum <- <wordcap> / <numcap>
-			wordcap <- (<pos> {:t: <word> :} {:x: ''-> 'w' :} ) -> {}
-			numcap  <- (<pos> {:t: <num> :} {:x: ''-> 'd'  :} ) -> {}
+			wordcap <- <pos> {:t: <word> :} {:x: ''-> 'w' :}
+			numcap  <- <pos> {:t: <num> :} {:x: ''-> 'd'  :}
 			word <- %l+
 			num <- %d+
 			pos <- {:p: {} :}
