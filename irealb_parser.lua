@@ -13,7 +13,7 @@ end
 
 local irealb_parser = re.compile([[
 irealbook <- ( <scheme> ? <songbook>  ) -> {}
-scheme <- 'irealbook://' / 'irealb://'
+scheme <- {:scheme: 'irealbook:' / 'irealb:' :} '//'
 songbook <- ( <song> ( <song> * ) {:title: <field>? :} '\n'* )
 song <- ({:title: <field> :} <ssep> {:composer: <field> :} <ssep> {:style: <field> :} <ssep> {:key: <field> :} <ssep> {:xxx: <field> :} <ssep> {:tune: <tune> :} <ssep>) -> {} 
 
