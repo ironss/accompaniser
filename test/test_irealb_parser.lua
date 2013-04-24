@@ -35,65 +35,13 @@ function Test_irealb_tune:test_1_bar_simple()
    assertEquals(stringify(tune), stringify(expected))
 end
 
---[[
-function Test_irealb_staff:test_1_bar_repeat()
-   local s = "{G C }"
-   local err, staff = irealb.song_parse(s)
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1], '{')
-   assertEquals(staff[2][2], 'G C ')
-   assertEquals(staff[2][3], '}')
+function Test_irealb_tune:test_1_bar_repeat()
+   local s = "{GC}"
+   local expected = {{pos=1, text='{', elem='barline'}, {pos=2, text='G', elem='chord'}, {pos=3, text='C', elem='chord'}, {pos=4, text='}', elem='barline'}}
+   local err, text, tune = irealb.song_parse(s)
+   assertEquals(text, s)
+   assertEquals(stringify(tune), stringify(expected))
 end
-
-function Test_irealb_staff:test_2_bar_repeat()
-   local s = "{D G |C   }"
-   local err, staff = irealb.song_parse(s)
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1], '{')
-   assertEquals(staff[2][2], 'D G ')
-   assertEquals(staff[2][3], '|')
-   assertEquals(staff[2][4], 'C   ')
-   assertEquals(staff[2][5], '}')
-end
-
-function Test_irealb_staff:test_4_bar_repeat()
-   local s = "{D G |C   }{G C |G   }"
-   local err, staff = irealb.song_parse(s)
-   print(serpent.block(staff))
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1], '{')
-   assertEquals(staff[2][2], 'D G ')
-   assertEquals(staff[2][3], '|')
-   assertEquals(staff[2][4], 'C   ')
-   assertEquals(staff[2][5], '}')
-   assertEquals(staff[2][6], '{')
-   assertEquals(staff[2][7], 'G C ')
-   assertEquals(staff[2][8], '|')
-   assertEquals(staff[2][9], 'G   ')
-   assertEquals(staff[2][10], '}')
-end
-
-function Test_irealb_staff:test_1_bar_simple_initial_content()
-   local s = "*a|G C Z"
-   local err, staff = irealb.song_parse(s)
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1], '*a')
-   assertEquals(staff[2][2], '|')
-   assertEquals(staff[2][3], 'G C ')
-   assertEquals(staff[2][4], 'Z')
-end
-
-function Test_irealb_staff:test_1_bar_simple_trailing_space_content()
-   local s = "|G C Z "
-   local err, staff = irealb.song_parse(s)
-   print(serpent.block(staff))
-   assertEquals(staff[1], s)
-   assertEquals(staff[2][1], '|')
-   assertEquals(staff[2][2], 'G C ')
-   assertEquals(staff[2][3], 'Z')
-end
-
---]]
 
 
 if true then
