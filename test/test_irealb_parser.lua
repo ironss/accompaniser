@@ -11,8 +11,6 @@ local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
 
--- print(serpent.block(book))
-
 
 Test_irealb = {}
 
@@ -25,12 +23,9 @@ function Test_irealb:test_2_book_title()
 end
 
 
---print(serpent.block(book))
-
-
---[[
 Test_irealb_staff = {}
 
+--[[
 function Test_irealb_staff:test_1_bar_simple()
    local s = "|G C Z"
    local err, staff = irealb.song_parse(s)
@@ -104,7 +99,6 @@ end
 if true then
 Test_parse_irealb_corpus = {}
 
-
 for i, song in ipairs(book) do
 --    print(i, song.composer, song.title)
    Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
@@ -115,7 +109,7 @@ for i, song in ipairs(book) do
       assertNotEquals(song.tune.text, '')
       
 --      print(song.tune.text)
-      err, tune = irealb.song_parse(song.tune.text)
+      err, tune_text, tune = irealb.song_parse(song.tune.text)
 --      print(serpent.block(song.tune))
 --      print(serpent.block(tune))
       r = ''
@@ -127,5 +121,6 @@ for i, song in ipairs(book) do
 end
 
 end
+
 return LuaUnit:run()
 

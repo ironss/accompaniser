@@ -25,25 +25,28 @@ sep <- '='
 
 
 local song_parser = re.compile([[
-song <- <prefix>? ( ({:pos: {} :} {:text: <element> :}) -> {} * ) -> {}
+song <- { <songcap> }
+songcap <- ( <elementcap> )* -> {}
 
 prefix <- '1r34LbKcu7'
 
-element <- <barline>
-           / <label> 
-           / <symbol>
-           / <timesig> 
-           / <chord>
-           / <altchord>
-           / <nochord>
-           / <space> 
-           / <repeatbar> 
-           / <ending> 
-           / <stafftext>
-           / <vspace>
-           / <end>
-           / <unknown>
+elementcap <- (<poscap> {:text: { <element> } :}) -> {}
+poscap <- {:pos: {} :}
 
+element <- <barline>
+         / <label> 
+         / <symbol>
+         / <timesig> 
+         / <chord>
+         / <altchord>
+         / <nochord>
+         / <space> 
+         / <repeatbar> 
+         / <ending> 
+         / <stafftext>
+         / <vspace>
+         / <end>
+         / <unknown>
 
 barline <- '[' / ']' / '{' / '}' / '|'
 
@@ -54,8 +57,10 @@ symbol <- 'Q' -- coda
         / 'S' -- segno
         / 'f' -- fermata
 
--- Valid signatures are identified explicitly, but a fall-through that allows
--- any digits is added at the end.
+
+-- Valid time signatures are identified explicitly, but a fall-through that 
+-- allows any digits is added at the end.
+
 timesig <- 'T22' 
          / 'T32'
          / 'T24'
