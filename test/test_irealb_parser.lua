@@ -29,10 +29,42 @@ end
 
 
 
+Test_irealb_obfusc = {}
+
+function Test_irealb_obfusc:test_obfusc_050()
+   local tune     = '[T44A BLZC DLZE FLZG, ALZA BLZC DLZE FLZG ALZA B | '
+   local expected = '[T44A BLZC DLZE FLZG, ALZA BLZC DLZE FLZG ALZA B | '
+   local actual = irealb.unobfusc(tune)
+   assertEquals(actual, expected)
+end
+
+function Test_irealb_obfusc:test_obfusc_051()
+   local tune     = '| B A BLZCZLF EZLD CZLB ZALA ,GZLF EZLD G ALZA44T[C '
+   local expected = '[T44A BLZC DLZE FLZG, ALZA BLZC DLZE FLZG ALZA B |C '
+   local actual = irealb.unobfusc(tune)
+   assertEquals(actual, expected)
+end
+
+function Test_irealb_obfusc:test_obfusc_100()
+   local tune     = 'ZLB A BLZCZLF EZLD CZLB ZALA ,GZLF EZLD G ALZA44T[C- DLZE FLZG A,LZA BLZC DLZE FLZG ALZA BLZC- D |E '
+   local expected = '[T44A BLZC DLZE FLZG, ALZA BLZC DLZE FLZG ALZA BLZC- DLZE FLZG A,LZA BLZC DLZE FLZG ALZA BLZC- D |E '
+   local actual = irealb.unobfusc(tune)
+   assertEquals(actual, expected)
+end
+
+function Test_irealb_obfusc:test_obfusc_101()
+   local tune     = 'ZLB A BLZCZLF EZLD CZLB ZALA ,GZLF EZLD G ALZA44T[ EZLDZE FLB AZLA GZLF EZDL CZLB AZL,A GZLZC- LD -CF '
+   local expected = '[T44A BLZC DLZE FLZG, ALZA BLZC DLZE FLZG ALZA BLZC- DLZE FLZG A,LZA BLZC DLZE FLZG ALZA BLZC- DLZE F '
+   local actual = irealb.unobfusc(tune)
+   assertEquals(actual, expected)
+end
+
+
 local fn = 'test/files/jazz-1-irealbook.url'
 local f = io.open(fn)
 local s = f:read('*a')
 local err, book = irealb.url_parse(s)
+--print(serpent.block(book))
 
 if false then
 	Test_irealbook = {}
@@ -59,11 +91,10 @@ if false then
 	      assertNotEquals(song.key, '')
 	      assertNotEquals(song.tune.raw, '')
 		   
-		   if book.scheme == 'irealb' then
-		      song.tune.text = irealb.unobfusc(song.tune.raw)
-		   else
-		      song.tune.text = song.tune.raw
+		   if song.tune.key ~= nil then
+		      song.tune.text = irealb.unobfusc(song.tune.raw, song.tune.key)
 		   end
+
 	--      print(song.tune.text)
 		   err, tune_text, tune = irealb.song_parse(song.tune.text)
 	--      print(serpent.block(song.tune))
@@ -99,7 +130,7 @@ if false then
 	end
 end
 
-if true then
+if false then
 	Test_parse_irealb_corpus = {}
 
 	for i, song in ipairs(book) do
@@ -111,15 +142,14 @@ if true then
 	--      assertNotEquals(song.key, '')
 	--      assertNotEquals(song.tune.raw, '')
 		   
-		   if book.scheme == 'irealb' then
-		      song.tune.text = irealb.unobfusc(song.tune.raw)
-		   else
-		      song.tune.text = song.tune.raw
+		   if song.tune.key ~= nil then
+		      song.tune.text = irealb.unobfusc(song.tune.raw, song.tune.key)
 		   end
+
 		   print(song.tune.raw)
 	      print(song.tune.text)
 	--	   err, tune_text, tune = irealb.song_parse(song.tune.text)
-	--      print(serpent.block(song))
+--	      print(serpent.block(song))
 	--      print(serpent.block(tune))
 		   r = ''
 		   for _, element in ipairs(tune) do

@@ -10,7 +10,6 @@ function url_decode(str)
   return str
 end
 
-
 local irealb_parser = re.compile([[
 songbookurl <- ( <irealbookurl> / <irealburl> ) -> {}
 irealbookurl <- {:scheme: 'irealbook' :} '://' <irealbooksongbook>
@@ -40,7 +39,10 @@ irealbsong <- ( {:title: <field> :} <ssep>
                 {:x7: <field> :} <ssep> 
               ) -> {} 
 
-tune <- {:raw: <field> :} -> {}
+tune <- <obfusctune> / <plaintune>
+obfusctune <- ( {:key: '1r34LbKcu7' :} {:raw: <field> :} )-> {}
+plaintune <- ( {:text: <field> :} )-> {}
+
 field <- [^=]*
 ssep <- <sep> %s*
 sep <- '='
@@ -130,13 +132,53 @@ unknown <- 's' -- small size chord
 ]])
 
 
+
+local separator = re.compile([[
+   {: . :} * -> {}
+]])
+
+
+local function sep(s) return re.find(s, separator) end
+
+local function obfusc50(s)
+   local err, t = sep(s)
+   for i = 1, 5 do
+      t[i], t[51-i] = t[51-i], t[i]
+   end
+
+   for i = 11, 24 do
+      t[i], t[51-i] = t[51-i], t[i]
+   end
+
+   return table.concat(t)
+end
+
+
+local function obfusc(s)
+   local r = ''
+
+   while s:len() > 50 do
+      p = s:sub(1, 50)
+      s = s:sub(51, -1)
+      if s:len() < 2 then
+         r = r .. p
+      else
+         r = r .. obfusc50(p)
+      end
+   end
+   r = r .. s
+   return r
+end
+
+
 local M = {}
 
 M.url_parse = function(s) return re.find(url_decode(s), irealb_parser) end
 M.parse = function(s) return re.find(s, irealb_parser) end
 M.song_parse = function(s) return re.find(s, song_parser) end
 
-M.unobfusc = function(s) return s end
+M.obfusc = obfusc
+M.unobfusc = obfusc
 
 
 M.transpose = 0
