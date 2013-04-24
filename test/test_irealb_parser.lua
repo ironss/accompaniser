@@ -19,8 +19,9 @@ function Test_irealb:test_1_number_of_songs()
    assertEquals(#book, 300)
 end
 
-function Test_irealb:test_2_book_title()
+function Test_irealb:test_2_book_params()
    assertEquals(book.title, "Jazz - 1 of 4\n")
+   assertEquals(book.scheme, "irealbook:")
 end
 
 
