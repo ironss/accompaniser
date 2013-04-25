@@ -1,10 +1,11 @@
 #! /usr/bin/lua
 
 -- Copyright (c) 2013 Stephen Irons 
--- License included at end of file
+-- License text at end of file
 
 package.path = './?/?.lua;' .. package.path
 require('luaunit')
+
 local serpent = require('serpent')
 local function stringify(t) return serpent.line(t, {comment=false} ) end
 
@@ -164,6 +165,9 @@ if true then
 		end
 	end
 end
+
+-- LuaUnit:setVerbosity(1)
+-- LuaUnit:setOutputType('tap')
 
 return LuaUnit:run()
 
