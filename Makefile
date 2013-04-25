@@ -12,6 +12,9 @@ $(tests):
 test: $(testfiles)
 	$(foreach f, $^, $f;)
 
+clean:
+	rm -f *.xml
+
 .PHONY: test $(tests)
 
 
