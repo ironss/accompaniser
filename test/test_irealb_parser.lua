@@ -137,7 +137,7 @@ if true then
 	Test_parse_irealb_corpus = {}
 
 	for i, song in ipairs(book) do
-	--    print(i, song.composer, song.title)
+--      print(i, song.composer, song.title)
 		Test_parse_irealb_corpus['test_' .. string.format("%03d", i)] = function()
 		   assertNotEquals(song.composer, '')
          assertNotEquals(song.title, '')
@@ -149,12 +149,12 @@ if true then
 		      song.tune.text = irealb.unobfusc(song.tune.raw, song.tune.key)
 		   end
 
---       print(song.tune.raw)
-         print(song.title)
-         print(song.tune.text)
+--         print(song.tune.raw)
+--         print(song.title)
+--         print(song.tune.text)
          err, tune_text, tune = irealb.song_parse(song.tune.text)
---      print(serpent.block(song))
---	      print(serpent.block(tune))
+--         print(serpent.block(song))
+--	        print(serpent.block(tune))
 		   r = ''
 		   for _, element in ipairs(tune) do
 		      r = r .. element.text
